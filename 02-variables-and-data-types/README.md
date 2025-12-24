@@ -308,16 +308,12 @@ Default in variable
 Interactive prompt    (lowest)
 ```
 
-## 🔗 What's Next
-
-After mastering this:
-- **Next:** 03-provisioners-nginx-automation/ - Automated server deployment
-
 ---
 
-**Time Spent:** 3-4 hours  
+**Time Spent:** 2-3 hours  
 **Difficulty:** Intermediate  
 **Concepts Mastered:** Variables, Maps, Lists, Lookups  
 **Errors Fixed:** 2  
 **Console Sessions:** Multiple  
 **Success Rate:** 100% after debugging 💪
+
