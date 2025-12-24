@@ -285,16 +285,11 @@ Skills Level: Beginner → Intermediate
 Confidence: Can deploy basic infrastructure independently
 ```
 
-## 🔗 What's Next
-
-After mastering this:
-- **Next:** 02-variables-and-data-types/ - Learn dynamic configurations
-
 ---
 
-**Time Spent:** 2-3 hours  
+**Time Spent:** 1-2 hours  
 **Difficulty:** Beginner  
 **Resources Created:** 3 EC2 instances  
 **Resources Destroyed:** 3 EC2 instances  
-**Cost Incurred:** $0.00  
 **Knowledge Gained:** Priceless 💎
+
