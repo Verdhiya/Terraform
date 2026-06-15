@@ -29,16 +29,22 @@ This repository documents my hands-on learning experience with **Terraform** and
 - ✅ EC2 instance deployment
 - ✅ Security group configuration
 - ✅ SSH key pair management
-- ✅ VPC networking basics
-- ✅ Free tier optimization
+- ✅ Data sources (AMI, AZs, VPC, IP ranges) for dynamic config
+- ✅ Remote state backend (S3, encrypted)
+- ✅ Custom VPC: public/private subnets, IGW, NAT Gateway, route tables
+- ✅ Multi-AZ network design
+- ✅ Free tier optimization (and knowing what is NOT free tier)
 
 ## 📂 Learning Path
 
 ```
 terraform-learning/
-├── 01-terraform-basics/              # Started here: Providers & Basic EC2
-├── 02-variables-and-data-types/      # Learned: Variables, Maps, Dynamic Config
-└── 03-provisioners-nginx-automation/ # Mastered: Automation & Provisioning
+├── 01-terraform-basics/                  # Started here: Providers & Basic EC2
+├── 02-variables-and-data-types/          # Learned: Variables, Maps, Dynamic Config
+├── 03-provisioners-nginx-automation/     # Mastered: Provisioners & Nginx automation
+│   └── data_source/                      # Data sources + S3 remote state backend
+└── 04-aws-vpc-networking/                # Built: Custom VPC, subnets, IGW + NAT Gateway
+    └── custom-vpc-nat-gateway/
 ```
 
 ## 🛠️ Technologies Used
@@ -144,15 +150,50 @@ terraform console  # Tested var.AMIS, var.AMIS[var.AWS_REGION]
 - ✅ Successful SSH connection and provisioning
 - ✅ Clean destruction (21 seconds)
 
+### Project 4: Data Sources & Remote State (03/data_source)
+**What I Did:**
+- Used 7 data sources (AMI, caller identity, region, AZs, VPC, SG, IP ranges)
+- Replaced hardcoded AMIs with dynamic `aws_ami` lookup
+- Used `slice()` to stay within the 60-rule/SG limit
+- Migrated state to an encrypted S3 backend (`tf-state-learn-001`)
+
+**Result:**
+- ✅ Zero hardcoded values in the configuration
+- ✅ Remote state in S3 (encrypted, versioned)
+
+### Project 5: Custom VPC with NAT Gateway (04)
+**What I Did:**
+- Built a custom VPC (`10.0.0.0/16`) with 3 public + 3 private subnets across 3 AZs
+- Created Internet Gateway, NAT Gateway + Elastic IP, and public/private route tables
+- Deployed an EC2 instance into a public subnet with a security group
+
+**Result:**
+- ✅ 21 resources, full multi-AZ network foundation
+- ⚠️ NAT Gateway is **not** free tier — see Cost & Security Notes below
+
+## 💰 Cost & Security Notes
+
+> Read this before running `04` — it can generate real charges.
+
+**Cost**
+- `01`–`03` stay within the AWS Free Tier (t2.micro, default networking).
+- **`04` is NOT free tier.** A **NAT Gateway** costs ~$0.045/hr (~$32/month) **plus** data-processing charges, and bills even while idle. The Elastic IP is free only while attached to a running NAT Gateway.
+- Always run `terraform destroy` when you finish a `04` session, and set a billing/budget alert.
+
+**Security (learning-only shortcuts)**
+- Security groups in `03` and `04` allow SSH (22) — and HTTP/HTTPS — from `0.0.0.0/0`. This is fine for short-lived labs but is **not** safe for anything real.
+- For real use: restrict port 22 to your own IP (`<your-ip>/32`) or use AWS SSM Session Manager (no open SSH port at all).
+- The S3 backend uses encryption but no state locking — solo use only; add DynamoDB (or TF ≥1.10 `use_lockfile`) for team use.
+
 ## 📈 Progress Timeline
 
-**Total Learning Time:** 3 days  
-**Projects Completed:** 3  
-**Infrastructure Deployments:** 5+  
-**Lines of Terraform Code:** ~300  
-**AWS Resources Created:** 10+  
-**Errors Debugged:** 6+  
-**Concepts Mastered:** 40+
+**Total Learning Time:** 4+ days  
+**Projects Completed:** 5  
+**Infrastructure Deployments:** 7+  
+**Lines of Terraform Code:** ~1,100  
+**AWS Resources Created:** 30+  
+**Errors Debugged:** 10+  
+**Concepts Mastered:** 50+
 
 ## 🔐 Security Practices Followed
 
@@ -188,10 +229,10 @@ This knowledge prepares me for:
 
 ## 📊 Repository Stats
 
-- **Directories:** 3
-- **Terraform Files:** 9
-- **Total Lines:** ~300+
-- **Documentation:** 4 README files
+- **Top-level sections:** 4
+- **Terraform Files:** 17
+- **Total Lines:** ~1,100+
+- **Documentation:** 6 README files
 - **Scripts:** 1 (installNginx.sh)
 
 ## 🤝 Contributing
@@ -204,4 +245,4 @@ This is a personal learning repository. Feel free to fork and use for your own l
 
 ---
 
-**Last Updated:** December 2024  
+**Last Updated:** June 2026  
