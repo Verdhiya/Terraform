@@ -160,6 +160,11 @@ ami = var.AMIS[var.AWS_REGION]  # ✅ Map lookup returns string
 - Terraform validates attribute types
 
 ### Error 2: Understanding References
+> **Note:** The `sg-sv1/2/3` IDs here are **fake on purpose** — I used them to test whether
+> Terraform would create the security groups or just reference them. It references existing
+> SGs (so applying with these would fail). In later lessons (`03`, `04`) I create real
+> security groups with `resource "aws_security_group"` and reference them properly.
+
 **My question:** Will Terraform create security groups with names sg-sv1, sg-sv2, sg-sv3?
 
 **Answer I learned:**
@@ -308,6 +313,11 @@ Default in variable
 Interactive prompt    (lowest)
 ```
 
+## 🔗 What's Next
+
+After mastering this:
+- **Next:** 03-provisioners-nginx-automation/ - Automated server deployment
+
 ---
 
 **Time Spent:** 2-3 hours  
@@ -316,4 +326,3 @@ Interactive prompt    (lowest)
 **Errors Fixed:** 2  
 **Console Sessions:** Multiple  
 **Success Rate:** 100% after debugging 💪
-
